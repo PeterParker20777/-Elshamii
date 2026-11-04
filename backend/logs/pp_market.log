@@ -1,0 +1,38 @@
+2026-11-05 00:22:41,571 INFO django.utils.autoreload: Watching for file changes with StatReloader
+2026-11-05 00:22:58,832 WARNING django.request: Not Found: /favicon.ico
+2026-11-05 00:23:45,523 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:31:50,994 INFO django.utils.autoreload: Watching for file changes with StatReloader
+2026-11-05 00:32:44,638 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:32:44,770 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:04,600 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:05,880 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:06,050 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:06,507 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:06,664 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:06,814 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:06,968 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:07,121 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:15,239 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:15,404 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:15,614 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:15,797 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:18,458 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:18,634 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:18,799 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:18,978 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:35,333 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:35,795 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:35,956 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:36,107 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:36,274 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:36,449 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:53,882 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:54,051 WARNING django.request: Bad Request: /api/auth/bootstrap/
+2026-11-05 00:33:54,182 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:54,365 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:54,540 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:54,719 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:54,903 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:55,074 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:55,675 WARNING django.request: Too Many Requests: /api/auth/bootstrap/
+2026-11-05 00:33:55,900 WARNING django.request: Too Many Requests: /api/auth/bootstrap/

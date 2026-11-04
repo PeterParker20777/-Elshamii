@@ -1,0 +1,116 @@
+"""Arabic/English strings and Arabic display shaping for Elshamii Desktop."""
+
+TEXT = {
+    "en": {
+        "products_sub": "Manage your store catalog and prices.", "categories": "Categories", "categories_sub": "Organize products into store sections.",
+        "inventory": "Inventory", "inventory_sub": "Track stock and record every adjustment.", "reports": "Reports", "reports_sub": "Live operational indicators from your store.",
+        "add_product": "Add product", "edit_product": "Edit product", "product_search": "Search by product name, SKU or barcode",
+        "no_products": "No active products found.", "product_name_ar": "Product name (Arabic)", "product_name_en": "Product name (English)",
+        "sku": "SKU", "barcode": "Barcode", "price": "Selling price (EGP)", "stock": "Stock quantity", "low_stock_threshold": "Low-stock alert at",
+        "category": "Category", "no_category": "No category", "edit": "Edit", "deactivate": "Deactivate", "deactivate_confirm": "Deactivate this product? It will remain in past orders.",
+        "add_category": "Add category", "category_name_ar": "Category name (Arabic)", "category_name_en": "Category name (English)",
+        "adjust_stock": "Adjust stock", "current_stock": "Current stock", "stock_delta": "Quantity change (use negative to remove)", "stock_delta_error": "Quantity change cannot be zero.", "note": "Note (optional)",
+        "active_products": "Available products", "completed_orders": "Completed orders", "pending_orders": "Pending orders", "report_live_hint": "Current database totals",
+        "brand_ar": "الشامي", "brand_en": "Elshamii", "subtitle": "SUPERMARKET MANAGEMENT",
+        "login_title": "Welcome back", "login_subtitle": "Sign in to manage your store",
+        "username": "Username", "password": "Password", "sign_in": "Sign in",
+        "show_password": "Show password",
+        "bootstrap_title": "First-time owner setup", "bootstrap_subtitle": "Create the main owner account. This setup is available only once.",
+        "confirm_password": "Confirm password", "developer_code": "Developer activation code",
+        "bootstrap_username_entry": "", "create_owner": "Create owner account",
+        "complete_fields": "Complete all fields.", "password_mismatch": "Passwords do not match.",
+        "password_short": "Password must be at least 8 characters.", "invalid_developer_code": "Developer activation code is incorrect.",
+        "setup_already_done": "The first owner account has already been created.", "username_taken": "This username is already in use.", "invalid_input": "Some account details are invalid. Check the password and username.",
+        "bootstrap_not_configured": "Developer activation is not configured on this installation.",
+        "bootstrap_failed": "Could not create the owner account. Check the server logs.", "login_error": "Sign-in failed. Check your details and server connection.",
+        "dashboard": "Dashboard", "orders": "Orders", "server": "Server status", "settings": "Settings",
+        "logout": "Sign out", "overview": "Store overview", "overview_sub": "A live snapshot of your store activity.",
+        "today_sales": "Today's sales", "today_orders": "Today's orders", "products": "Products",
+        "low_stock": "Low stock", "out_stock": "Out of stock", "order_queue": "Recent orders",
+        "view_orders": "View all orders", "no_orders": "No orders to display yet.",
+        "refresh": "Refresh", "search": "Search by order, customer or phone", "all_statuses": "All statuses",
+        "customer": "Customer", "reference": "Order", "total": "Total", "status": "Status",
+        "payment": "Payment", "created": "Created", "actions": "Actions", "details": "Details",
+        "accept": "Accept", "prepare": "Start preparing", "ready": "Mark ready", "complete": "Complete",
+        "reject": "Reject", "cancel": "Cancel", "confirm_payment": "Confirm payment",
+        "server_title": "System health", "server_sub": "Connection status for the local store service.",
+        "api_status": "Backend API", "database": "Database", "api_address": "Local API address",
+        "connected": "Connected", "disconnected": "Unavailable", "not_signed_in": "Not signed in",
+        "settings_title": "Store settings", "settings_sub": "Manage the identity shown in your store experience.",
+        "logo": "Store logo", "choose_logo": "Choose image", "logo_hint": "PNG, JPG or WEBP image",
+        "instagram": "Instagram profile URL", "save": "Save settings", "saved": "Settings saved successfully.",
+        "brand_note": "Your customer-facing brand", "made_by": "Made By PeterParker 🕷️",
+        "language": "Language", "english": "English", "arabic": "العربية", "loading": "Loading…",
+        "status_PENDING": "Pending", "status_ACCEPTED": "Accepted", "status_PREPARING": "Preparing",
+        "status_READY": "Ready", "status_COMPLETED": "Completed", "status_REJECTED": "Rejected",
+        "status_CANCELLED": "Cancelled", "payment_UNPAID": "Unpaid", "payment_AWAITING_VERIFICATION": "Awaiting verification",
+        "payment_CONFIRMED": "Confirmed", "cash": "Cash", "wallet": "Wallet",
+        "api_error": "Could not load data. Check that the store server is running.",
+        "reason_title": "Reason", "reason_hint": "Enter a reason", "confirm": "Confirm", "back": "Back",
+        "no_permission": "Your account does not have staff access.", "app_title": "الشامي | Elshamii",
+    },
+    "ar": {
+        "products_sub": "إدارة المنتجات والأسعار وبيانات الأصناف.", "categories": "الأقسام", "categories_sub": "تنظيم المنتجات داخل أقسام المحل.",
+        "inventory": "المخزون", "inventory_sub": "متابعة الكميات وتسجيل كل حركة مخزون.", "reports": "التقارير", "reports_sub": "مؤشرات تشغيل مباشرة من بيانات المحل.",
+        "add_product": "إضافة منتج", "edit_product": "تعديل المنتج", "product_search": "ابحث بالاسم أو SKU أو الباركود",
+        "no_products": "مفيش منتجات نشطة حاليًا.", "product_name_ar": "اسم المنتج بالعربي", "product_name_en": "اسم المنتج بالإنجليزي",
+        "sku": "كود SKU", "barcode": "الباركود", "price": "سعر البيع (جنيه)", "stock": "الكمية بالمخزون", "low_stock_threshold": "حد تنبيه المخزون المنخفض",
+        "category": "القسم", "no_category": "بدون قسم", "edit": "تعديل", "deactivate": "إيقاف", "deactivate_confirm": "تأكيد إيقاف المنتج؟ هيفضل موجود في الفواتير والطلبات القديمة.",
+        "add_category": "إضافة قسم", "category_name_ar": "اسم القسم بالعربي", "category_name_en": "اسم القسم بالإنجليزي",
+        "adjust_stock": "تعديل المخزون", "current_stock": "الكمية الحالية", "stock_delta": "التغيير في الكمية (استخدم السالب للخصم)", "stock_delta_error": "التغيير في الكمية مينفعش يكون صفر.", "note": "ملاحظة (اختياري)",
+        "active_products": "المنتجات المتاحة", "completed_orders": "الطلبات المكتملة", "pending_orders": "الطلبات المعلقة", "report_live_hint": "إجمالي حالي من قاعدة البيانات",
+        "brand_ar": "الشامي", "brand_en": "Elshamii", "subtitle": "إدارة السوبر ماركت",
+        "login_title": "أهلاً بعودتك", "login_subtitle": "سجّل الدخول لإدارة المحل",
+        "username": "اسم المستخدم", "password": "كلمة المرور", "sign_in": "تسجيل الدخول",
+        "show_password": "إظهار كلمة المرور",
+        "bootstrap_title": "إعداد حساب المالك لأول مرة", "bootstrap_subtitle": "أنشئ حساب المالك الرئيسي. الخطوة دي متاحة مرة واحدة فقط.",
+        "confirm_password": "تأكيد كلمة المرور", "developer_code": "كود تفعيل المطوّر",
+        "bootstrap_username_entry": "", "create_owner": "إنشاء حساب المالك",
+        "complete_fields": "من فضلك املأ كل البيانات.", "password_mismatch": "كلمتا المرور غير متطابقتين.",
+        "password_short": "كلمة المرور لازم تكون 8 أحرف على الأقل.", "invalid_developer_code": "كود تفعيل المطوّر غير صحيح.",
+        "setup_already_done": "تم إنشاء حساب المالك بالفعل.", "username_taken": "اسم المستخدم ده مستخدم بالفعل.", "invalid_input": "فيه بيانات غير صحيحة. راجع اسم المستخدم وكلمة المرور.",
+        "bootstrap_not_configured": "تفعيل المطوّر غير مضبوط على هذا التثبيت.",
+        "bootstrap_failed": "تعذر إنشاء حساب المالك. راجع سجل أخطاء السيرفر.", "login_error": "فشل تسجيل الدخول. راجع البيانات واتصال السيرفر.",
+        "dashboard": "الرئيسية", "orders": "الطلبات", "server": "حالة السيرفر", "settings": "الإعدادات",
+        "logout": "تسجيل الخروج", "overview": "نظرة عامة على المحل", "overview_sub": "ملخص مباشر لنشاط المحل.",
+        "today_sales": "مبيعات اليوم", "today_orders": "طلبات اليوم", "products": "المنتجات",
+        "low_stock": "مخزون منخفض", "out_stock": "نفد المخزون", "order_queue": "أحدث الطلبات",
+        "view_orders": "عرض كل الطلبات", "no_orders": "لا توجد طلبات لعرضها حاليًا.",
+        "refresh": "تحديث", "search": "ابحث برقم الطلب أو العميل أو الهاتف", "all_statuses": "كل الحالات",
+        "customer": "العميل", "reference": "الطلب", "total": "الإجمالي", "status": "الحالة",
+        "payment": "الدفع", "created": "التاريخ", "actions": "الإجراءات", "details": "التفاصيل",
+        "accept": "قبول", "prepare": "بدء التجهيز", "ready": "جاهز للاستلام", "complete": "إتمام",
+        "reject": "رفض", "cancel": "إلغاء", "confirm_payment": "تأكيد الدفع",
+        "server_title": "حالة النظام", "server_sub": "حالة الاتصال بخدمة المحل المحلية.",
+        "api_status": "خدمة Backend", "database": "قاعدة البيانات", "api_address": "عنوان API المحلي",
+        "connected": "متصل", "disconnected": "غير متاح", "not_signed_in": "لم يتم تسجيل الدخول",
+        "settings_title": "إعدادات المحل", "settings_sub": "إدارة الهوية التي تظهر للعملاء.",
+        "logo": "لوجو المحل", "choose_logo": "اختيار صورة", "logo_hint": "صورة PNG أو JPG أو WEBP",
+        "instagram": "رابط حساب Instagram", "save": "حفظ الإعدادات", "saved": "تم حفظ الإعدادات بنجاح.",
+        "brand_note": "الاسم الظاهر للعملاء", "made_by": "Made By PeterParker 🕷️",
+        "language": "اللغة", "english": "English", "arabic": "العربية", "loading": "جارٍ التحميل…",
+        "status_PENDING": "قيد الانتظار", "status_ACCEPTED": "تم القبول", "status_PREPARING": "جارٍ التجهيز",
+        "status_READY": "جاهز للاستلام", "status_COMPLETED": "مكتمل", "status_REJECTED": "مرفوض",
+        "status_CANCELLED": "ملغي", "payment_UNPAID": "غير مدفوع", "payment_AWAITING_VERIFICATION": "بانتظار التأكيد",
+        "payment_CONFIRMED": "تم التأكيد", "cash": "نقدي", "wallet": "محفظة",
+        "api_error": "تعذر تحميل البيانات. تأكد من تشغيل سيرفر المحل.",
+        "reason_title": "سبب الإجراء", "reason_hint": "اكتب السبب", "confirm": "تأكيد", "back": "رجوع",
+        "no_permission": "هذا الحساب ليس لديه صلاحية إدارة المحل.", "app_title": "الشامي | Elshamii",
+    },
+}
+
+
+def tr(language: str, key: str) -> str:
+    return TEXT.get(language, TEXT["ar"]).get(key, TEXT["en"].get(key, key))
+
+
+def shape_arabic(value: str, language: str) -> str:
+    """Shape Arabic for Tk renderers when optional bidi dependencies are installed."""
+    if language != "ar":
+        return str(value)
+    try:
+        import arabic_reshaper
+        from bidi.algorithm import get_display
+        return get_display(arabic_reshaper.reshape(str(value)))
+    except ImportError:
+        return str(value)
