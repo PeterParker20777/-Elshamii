@@ -6,7 +6,16 @@
   "VF_NUM": "",
   "WALLET_NUM": ""
  },
- "products": [],
+ "products": [
+  {
+   "id": "mwjqaupe",
+   "img": "images/mwjqaupe.jpg",
+   "ar": "توست فراوله",
+   "price": 15,
+   "qty": 20,
+   "cat_ar": "مشروبات"
+  }
+ ],
  "categories": [
   {
    "n": "بقالة",
