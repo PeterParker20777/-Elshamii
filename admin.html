@@ -28,7 +28,14 @@ label{display:block;font-weight:600;margin:12px 0 4px}
 .btn.del{background:transparent;color:var(--r);border:1.5px solid var(--r)}
 .big{width:100%;padding:13px;font-size:16px;margin-top:14px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:var(--card);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat{background:var(--card);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--sh);border:2px solid transparent;font:inherit;color:inherit;cursor:pointer;width:100%;transition:transform .12s,border-color .12s}
+.stat:active{transform:scale(.96)}.stat.on{border-color:var(--g)}
+#lcard{scroll-margin-top:72px}
+.stp{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 16px;font-weight:800;color:#fff;background:var(--g)}
+.stp.off{background:var(--r);color:#fff}
+.stp i{width:10px;height:10px;border-radius:50%;background:#fff;animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.35}}
+.btn.cl{background:var(--r);color:#fff}
 .stat b{display:block;font-size:26px;font-weight:800;color:var(--g)}
 .stat.w b{color:#c98a00}.stat.o b{color:var(--r)}
 .stat span{font-size:13px;color:var(--mut);font-weight:600}
@@ -94,19 +101,30 @@ html[dir=rtl] .fab{transform:translateX(50%)}
 </div>
 
 <div id="app" hidden>
-  <div class="stats">
-    <div class="stat"><b id="s1">0</b><span>كل المنتجات</span></div>
-    <div class="stat w"><b id="s2">0</b><span>قرب يخلص</span></div>
-    <div class="stat o"><b id="s3">0</b><span>نفد</span></div>
+  <div class="card" id="stcard">
+    <div class="hd"><h2>🏪 حالة المحل</h2><span class="stp" id="stp"><i></i><span id="stpt"></span></span></div>
+    <p class="note" id="sttxt"></p>
+    <button class="btn big" id="stbtn" style="margin-top:6px"></button>
+    <label for="cmi">رسالة العميل لما المحل يكون مقفول</label>
+    <input id="cmi" placeholder="المحل مغلق حالياً، نفتح بكرة الساعة 9 صباحاً 🌙">
+    <p class="note">الرسالة دي بتظهر للعميل لو حاول يطلب والمحل مقفول.</p>
+    <button class="btn sec" id="saveMsg">حفظ الرسالة</button>
   </div>
 
-  <div class="card">
+  <div class="stats">
+    <button class="stat on" data-f="all"><b id="s1">0</b><span>كل المنتجات</span></button>
+    <button class="stat w" data-f="low"><b id="s2">0</b><span>قرب يخلص</span></button>
+    <button class="stat o" data-f="out"><b id="s3">0</b><span>نفد</span></button>
+  </div>
+
+  <div class="card" id="lcard">
     <input id="q" type="search" placeholder="🔍 ابحث عن منتج...">
     <div class="chips" id="fl">
       <button class="chip on" data-f="all">الكل</button>
       <button class="chip" data-f="low">قرب يخلص</button>
       <button class="chip" data-f="out">نفد</button>
     </div>
+    <p class="note" id="fhint" hidden></p>
     <div id="list"></div>
   </div>
 
@@ -258,7 +276,7 @@ function showApp(){
   ["app","add","out","view"].forEach(i=>$(i).hidden=false);
   const s=DB.settings;
   $("sa").value=s.SHOP_AR||"";$("sw").value=s.WHATSAPP||"";$("svf").value=s.VF_NUM||"";$("swl").value=s.WALLET_NUM||"";
-  setLogo();render();
+  setLogo();render();renderStore();
 }
 function setLogo(){const l=DB.settings.LOGO;$("lprev").hidden=!l;$("rmL").hidden=!l;if(l)$("lprev").src=l}
 const isLow=p=>p.qty>0&&p.qty<=5, isOut=p=>p.qty<=0;
@@ -266,6 +284,9 @@ function render(){
   const q=$("q").value.trim().toLowerCase(), P=DB.products;
   $("s1").textContent=P.length;$("s2").textContent=P.filter(isLow).length;$("s3").textContent=P.filter(isOut).length;
   const list=P.filter(p=>(filter==="all"||(filter==="low"&&isLow(p))||(filter==="out"&&isOut(p)))&&(!q||((p.ar||"")+" "+(p.en||"")).toLowerCase().includes(q)));
+  $("fhint").hidden=filter==="all";$("fhint").textContent=filter==="low"?"📉 المنتجات اللي باقي منها 5 قطع أو أقل ("+list.length+")":filter==="out"?"⛔ المنتجات اللي خلصت ("+list.length+")":"";
+  document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("on",x.dataset.f===filter));
+  document.querySelectorAll("#fl .chip").forEach(c=>c.classList.toggle("on",c.dataset.f===filter));
   $("list").innerHTML=list.length?list.map(p=>`
     <div class="item">
       ${p.img?`<img class="th" src="${esc(p.img)}" alt="" onerror="this.style.visibility='hidden'">`:`<div class="th">🛒</div>`}
@@ -303,10 +324,11 @@ async function flush(){
 $("go").onclick=connect;
 $("out").onclick=()=>{store.del("tok");location.reload()};
 $("q").oninput=render;
+document.querySelector(".stats").addEventListener("click",e=>{const b=e.target.closest(".stat");if(!b)return;filter=b.dataset.f;$("q").value="";render();$("lcard").scrollIntoView({behavior:"smooth",block:"start"})});
 $("fl").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.f;document.querySelectorAll("#fl .chip").forEach(c=>c.classList.toggle("on",c===b));render()};
 
 $("saveS").onclick=()=>run(async()=>{
-  const st={SHOP_AR:$("sa").value.trim()||"ماركت الشامي",WHATSAPP:$("sw").value.replace(/\D/g,""),VF_NUM:$("svf").value.replace(/\D/g,""),WALLET_NUM:$("swl").value.replace(/\D/g,""),LOGO:DB.settings.LOGO||""};
+  const st={...DB.settings,SHOP_AR:$("sa").value.trim()||"ماركت الشامي",WHATSAPP:$("sw").value.replace(/\D/g,""),VF_NUM:$("svf").value.replace(/\D/g,""),WALLET_NUM:$("swl").value.replace(/\D/g,""),LOGO:DB.settings.LOGO||""};
   const f=$("lg").files[0];let oldLogo=null;
   if(f){const png=f.type==="image/png";const path="images/logo-"+Date.now().toString(36)+(png?".png":".jpg");
     await putImage(path,await resize(f,400,png));oldLogo=st.LOGO;st.LOGO=path}
@@ -381,6 +403,22 @@ $("saveP").onclick=async()=>{
   },"✅ اتحفظ المنتج");
   if(ok)$("m").classList.remove("show");
 };
+
+/* ===== حالة المحل ===== */
+const DEF_CLOSED="المحل مغلق حالياً، تقدر تتصفح المنتجات وتطلب أول ما نفتح 🌙";
+const storeOpen=()=>DB.settings.STORE_OPEN!==false;
+function renderStore(){
+  const o=storeOpen();
+  $("stp").classList.toggle("off",!o);$("stpt").textContent=o?"مفتوح":"مغلق";
+  $("sttxt").textContent=o?"المحل مفتوح والعملاء يقدروا يطلبوا.":"المحل مغلق: العملاء بيشوفوا المنتجات بس ومش هيقدروا يطلبوا.";
+  $("stbtn").textContent=o?"🔴 إغلاق المحل":"🟢 فتح المحل";$("stbtn").classList.toggle("cl",o);
+  if(document.activeElement!==$("cmi"))$("cmi").value=DB.settings.CLOSED_MSG||"";
+}
+$("stbtn").onclick=()=>{
+  const o=storeOpen();
+  run(async()=>{DB.settings.STORE_OPEN=!o;if(o&&!DB.settings.CLOSED_MSG)DB.settings.CLOSED_MSG=DEF_CLOSED;await saveDB(o?"إغلاق المحل":"فتح المحل");renderStore()},o?"🔴 المحل اتقفل":"🟢 المحل اتفتح");
+};
+$("saveMsg").onclick=()=>run(async()=>{DB.settings.CLOSED_MSG=$("cmi").value.trim();await saveDB("تحديث رسالة الإغلاق");renderStore()},"✅ اتحفظت الرسالة");
 
 /* ===== العروض ===== */
 const oState=o=>o.active===false?"paused":(o.end&&Date.now()>new Date(o.end+"T23:59:59").getTime()?"ended":"on");

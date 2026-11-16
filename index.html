@@ -17,6 +17,12 @@ button{font:inherit;cursor:pointer}
 input{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px}
 input:focus,button:focus-visible{outline:3px solid var(--y);outline-offset:1px}
 
+.stbar{display:flex;justify-content:center;align-items:center;gap:8px;padding:6px 12px;padding-top:calc(6px + env(safe-area-inset-top,0px));color:#fff;font-weight:800;font-size:14px;background:#17874f}
+.stbar.off{background:#c62828}
+.stbar i{width:10px;height:10px;border-radius:50%;background:#fff;animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.35}}
+.stbar+.top{padding-top:10px}
+.closed .add:not(:disabled),.closed .ofa,.closed .oc{filter:grayscale(.7);opacity:.75}
 .top{min-height:96px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));color:#fff;
   background:radial-gradient(circle at 15% 130%,rgba(245,179,1,.35),transparent 45%),linear-gradient(135deg,var(--g2),var(--g));border-radius:0 0 30px 30px;box-shadow:0 8px 22px rgba(9,63,41,.28)}
 .hb{border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:14px;height:44px;min-width:44px;padding:0 13px;font-size:20px;position:relative;justify-self:end}
@@ -161,6 +167,7 @@ label.l{display:block;font-weight:600;margin:14px 0 5px}
 </style>
 </head>
 <body>
+<div class="stbar" id="stbar" role="status" hidden><i></i><span id="stt"></span></div>
 <header class="top">
   <div></div>
   <div class="brand" id="brand"></div>
@@ -219,6 +226,11 @@ label.l{display:block;font-weight:600;margin:14px 0 5px}
   <div class="note">هيتفتح واتساب والرسالة جاهزة، اضغط إرسال بس.</div>
   <button class="link" id="close">رجوع</button>
 </div></div>
+
+<div class="modal" id="cm"><div class="sheet"><div class="done">
+  <i>🔴</i><h2>المحل مغلق دلوقتي</h2><p id="cmsg" class="note"></p>
+  <button class="send" id="cm_ok">تمام</button>
+</div></div></div>
 
 <div class="modal" id="dm"><div class="sheet"><div class="done">
   <i>✅</i><h2>طلبك اتجهّز للإرسال</h2><p id="d_d" class="note"></p>
@@ -290,8 +302,19 @@ async function loadProducts(){
   }catch(e){products=[];cats=[];offers=[]}
   loading=false;
 }
+const isOpen=()=>CONFIG.STORE_OPEN!==false;
+function closedMsg(){$("cmsg").textContent=CONFIG.CLOSED_MSG||"المحل مغلق حالياً، تقدر تتصفح المنتجات وتطلب أول ما نفتح 🌙";$("cm").classList.add("show")}
+function renderStatus(){
+  if(loading)return;
+  const o=isOpen(),b=$("stbar");b.hidden=false;b.classList.toggle("off",!o);
+  $("stt").textContent=o?"🟢 المحل مفتوح الآن":"🔴 المحل مغلق الآن";
+  document.body.classList.toggle("closed",!o);
+}
+async function refreshStatus(){
+  try{const r=await fetch("products.json?t="+Date.now());if(!r.ok)return;const s=(await r.json()).settings||{};CONFIG.STORE_OPEN=s.STORE_OPEN;CONFIG.CLOSED_MSG=s.CLOSED_MSG;renderStatus()}catch(e){}
+}
 function renderStatic(){
-  document.title=CONFIG.SHOP_AR;
+  document.title=CONFIG.SHOP_AR;renderStatus();
   $("brand").innerHTML=CONFIG.LOGO?`<img src="${esc(CONFIG.LOGO)}" alt="${esc(CONFIG.SHOP_AR)}">`:`<span>${esc(CONFIG.SHOP_AR)}</span>`;
   $("sig").textContent=CONFIG.SHOP_AR;
   $("cp").textContent=`© ${new Date().getFullYear()} ${CONFIG.SHOP_AR} — جميع الحقوق محفوظة`;
@@ -345,6 +368,7 @@ function refresh(){renderChips();renderGrid();renderBar();if($("m").classList.co
 document.addEventListener("click",e=>{
   const ob=e.target.closest("[data-o]");
   if(ob){
+    if(!isOpen()){closedMsg();return}
     if(ob.dataset.o==="one")addOne(ob.dataset.id);
     else{const o=offers.find(x=>x.id===ob.dataset.oid);if(o)o.items.forEach(addOne)}
     refresh();const t=ob.innerHTML;ob.textContent="✓ اتضافت";setTimeout(()=>{if(ob.isConnected)ob.innerHTML=t},1200);return;
@@ -352,6 +376,7 @@ document.addEventListener("click",e=>{
   const b=e.target.closest("[data-a]");
   if(b){
     const i=b.dataset.i,p=products[i];
+    if(b.dataset.a==="plus"&&!isOpen()){closedMsg();return}
     if(b.dataset.a==="plus"){if((cart[i]||0)<p.qty)cart[i]=(cart[i]||0)+1}
     else{cart[i]=(cart[i]||0)-1;if(cart[i]<=0)delete cart[i]}
     if(!Object.keys(cart).length)$("m").classList.remove("show");
@@ -360,10 +385,12 @@ document.addEventListener("click",e=>{
   const c=e.target.closest(".chip");if(c){cat=c.dataset.c;refresh()}
 });
 $("s").addEventListener("input",renderGrid);
-const openCart=()=>{if(!Object.keys(cart).length)return;renderLines();$("err").textContent="";$("m").classList.add("show")};
+const openCart=()=>{if(!isOpen()){closedMsg();return}if(!Object.keys(cart).length)return;renderLines();$("err").textContent="";$("m").classList.add("show")};
 $("open").onclick=openCart;$("cartbtn").onclick=openCart;
 $("close").onclick=()=>$("m").classList.remove("show");
 $("m").addEventListener("click",e=>{if(e.target===$("m"))$("m").classList.remove("show")});
+$("cm_ok").onclick=()=>$("cm").classList.remove("show");
+$("cm").addEventListener("click",e=>{if(e.target===$("cm"))$("cm").classList.remove("show")});
 $("d_ok").onclick=()=>$("dm").classList.remove("show");
 document.querySelectorAll("input[name=get]").forEach(r=>r.onchange=()=>{$("addrBox").hidden=document.querySelector("input[name=get]:checked").value!=="delivery"});
 document.querySelectorAll("input[name=pay]").forEach(r=>r.onchange=updPay);
@@ -372,6 +399,7 @@ $("copy").onclick=async()=>{
   setTimeout(()=>$("copy").textContent="نسخ",1800);
 };
 $("send").onclick=()=>{
+  if(!isOpen()){$("m").classList.remove("show");closedMsg();return}
   const name=$("n").value.trim(),phone=$("ph").value.replace(/[\s-]/g,""),get=document.querySelector("input[name=get]:checked").value,
         addr=$("ad").value.trim(),pay=document.querySelector("input[name=pay]:checked").value,note=$("nt").value.trim();
   if(!name)return $("err").textContent="اكتب اسمك";
@@ -415,6 +443,7 @@ $("send").onclick=()=>{
   $("n").value=load("name")||"";$("ph").value=load("phone")||"";$("ad").value=load("addr")||"";
   renderStatic();refresh();
   await loadProducts();renderStatic();renderOffers();refresh();
+  setInterval(refreshStatus,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshStatus()});
 })();
 </script>
 </body>
