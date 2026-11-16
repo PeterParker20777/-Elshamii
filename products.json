@@ -8,6 +8,16 @@
  },
  "products": [
   {
+   "id": "mwjpnm6y",
+   "img": "images/mwjpnm6y.jpg",
+   "ar": "توست جوز الهند والتوت",
+   "en": "TWIST Coconut Berry",
+   "price": 15,
+   "qty": 20,
+   "cat_ar": "مشروبات",
+   "cat_en": ""
+  },
+  {
    "id": "mwjp9vki",
    "img": "images/mwjp9vki.jpg",
    "ar": "توست فراوله",
