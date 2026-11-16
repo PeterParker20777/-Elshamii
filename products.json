@@ -1,0 +1,71 @@
+{
+ "settings": {
+  "SHOP_AR": "ماركت الشامي",
+  "SHOP_EN": "Al-Shami Market",
+  "WHATSAPP": "201202636004",
+  "LOGO": "",
+  "SIGN": "PeterParker"
+ },
+ "products": [
+  {
+   "id": "d0",
+   "ar": "أرز مصري 1 كجم",
+   "en": "Egyptian Rice 1kg",
+   "price": 38,
+   "qty": 20,
+   "cat_ar": "بقالة",
+   "cat_en": "Grocery",
+   "img": ""
+  },
+  {
+   "id": "d1",
+   "ar": "سكر 1 كجم",
+   "en": "Sugar 1kg",
+   "price": 32,
+   "qty": 15,
+   "cat_ar": "بقالة",
+   "cat_en": "Grocery",
+   "img": ""
+  },
+  {
+   "id": "d2",
+   "ar": "زيت عباد الشمس 1 لتر",
+   "en": "Sunflower Oil 1L",
+   "price": 85,
+   "qty": 10,
+   "cat_ar": "بقالة",
+   "cat_en": "Grocery",
+   "img": ""
+  },
+  {
+   "id": "d3",
+   "ar": "لبن كامل الدسم 1 لتر",
+   "en": "Full Fat Milk 1L",
+   "price": 42,
+   "qty": 12,
+   "cat_ar": "ألبان",
+   "cat_en": "Dairy",
+   "img": ""
+  },
+  {
+   "id": "d4",
+   "ar": "بيض (30 بيضة)",
+   "en": "Eggs (30)",
+   "price": 135,
+   "qty": 0,
+   "cat_ar": "ألبان",
+   "cat_en": "Dairy",
+   "img": ""
+  },
+  {
+   "id": "d5",
+   "ar": "شاي 40 فتلة",
+   "en": "Tea 40 bags",
+   "price": 48,
+   "qty": 25,
+   "cat_ar": "مشروبات",
+   "cat_en": "Drinks",
+   "img": ""
+  }
+ ]
+}

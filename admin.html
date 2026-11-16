@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>إدارة ماركت الشامي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6f0;--card:#fff;--ink:#13201a;--mut:#5f6f65;--line:#e1e9e2;--g:#0f5c3b;--g2:#093f29;--gl:#e3f1e8;--y:#f5b301;--r:#d2342b;--sh:0 2px 10px rgba(15,60,40,.08)}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1511;--card:#17221b;--ink:#eaf2ec;--mut:#9db0a3;--line:#263629;--g:#3fbf78;--gl:#1b3225;--r:#ff7b6b;--sh:0 2px 10px rgba(0,0,0,.35)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Cairo,Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:100px;line-height:1.5}
+button{font:inherit;cursor:pointer}
+input{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+input:focus,button:focus-visible,summary:focus-visible{outline:3px solid var(--y);outline-offset:1px}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--g2),#0f5c3b);color:#fff;padding:12px 14px;padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:8px;border-radius:0 0 20px 20px;box-shadow:0 6px 18px rgba(9,63,41,.25)}
+header h1{margin:0;font-size:18px;font-weight:800;flex:1}
+#st{font-size:13px;opacity:.95;font-weight:600}
+.hb{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:10px;padding:7px 12px;font-weight:600;text-decoration:none;font-size:14px}
+.wrap{max-width:820px;margin:0 auto;padding:14px}
+.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:var(--sh)}
+h2{margin:0 0 8px;font-size:17px}
+label{display:block;font-weight:600;margin:12px 0 4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;background:var(--g);color:#fff}
+.btn.sec{background:var(--gl);color:var(--g)}
+.btn.del{background:transparent;color:var(--r);border:1.5px solid var(--r)}
+.big{width:100%;padding:13px;font-size:16px;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat b{display:block;font-size:26px;font-weight:800;color:var(--g)}
+.stat.w b{color:#c98a00}.stat.o b{color:var(--r)}
+.stat span{font-size:13px;color:var(--mut);font-weight:600}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 14px;font-weight:600}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.item{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.th{width:64px;height:64px;border-radius:12px;background:var(--gl);object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:26px}
+.item .nm{font-weight:700}
+.item small{color:var(--mut)}
+.act{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.qty{display:flex;align-items:center;background:var(--gl);border-radius:10px;padding:2px}
+.qty button{width:34px;height:32px;border:0;border-radius:8px;background:var(--g);color:#fff;font-size:18px;line-height:1}
+.qty span{min-width:42px;text-align:center;font-weight:800}
+.qty span.z{color:var(--r)}
+.act .btn{padding:6px 12px;font-size:14px}
+details summary{font-weight:800;font-size:17px;cursor:pointer}
+.note{color:var(--mut);font-size:14px;margin:6px 0}
+.err{color:var(--r);font-weight:600;margin-top:8px}
+.fab{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));inset-inline-start:50%;transform:translateX(-50%);background:var(--y);color:#13201a;border:0;border-radius:999px;padding:14px 26px;font-weight:800;font-size:16px;box-shadow:0 8px 22px rgba(245,179,1,.45);z-index:25;white-space:nowrap}
+html[dir=rtl] .fab{transform:translateX(50%)}
+.modal{position:fixed;inset:0;background:rgba(5,15,10,.6);display:none;z-index:40;align-items:flex-end;justify-content:center}
+.modal.show{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+#prev{width:120px;height:120px;object-fit:cover;border-radius:14px;background:var(--gl);display:block;margin-top:8px}
+#toast{position:fixed;bottom:84px;inset-inline:14px;max-width:520px;margin:auto;background:#13201a;color:#fff;padding:12px 14px;border-radius:12px;display:none;z-index:50}
+#toast.show{display:block}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>🛠️ إدارة ماركت الشامي</h1>
+  <span id="st"></span>
+  <a class="hb" id="view" href="index.html" target="_blank" hidden>الموقع</a>
+  <button class="hb" id="out" hidden>خروج</button>
+</header>
+<div class="wrap">
+
+<div class="card" id="login">
+  <h2>الدخول</h2>
+  <p class="note">الصفحة دي بتعدّل ملفات الموقع على GitHub مباشرة. اكتب بيانات الريبو والتوكن، وهيتحفظوا على جهازك بس.</p>
+  <label for="repo">اسم الريبو (اسم-المستخدم/اسم-الريبو)</label>
+  <input id="repo" placeholder="ahmed123/shami-market" dir="ltr" autocomplete="off">
+  <label for="tok">التوكن (Token)</label>
+  <input id="tok" type="password" placeholder="github_pat_..." dir="ltr" autocomplete="off">
+  <div class="err" id="lerr"></div>
+  <button class="btn big" id="go">دخول</button>
+</div>
+
+<div id="app" hidden>
+  <div class="stats">
+    <div class="stat"><b id="s1">0</b><span>كل المنتجات</span></div>
+    <div class="stat w"><b id="s2">0</b><span>قرب يخلص</span></div>
+    <div class="stat o"><b id="s3">0</b><span>نفد</span></div>
+  </div>
+
+  <div class="card">
+    <input id="q" type="search" placeholder="🔍 ابحث عن منتج...">
+    <div class="chips" id="fl">
+      <button class="chip on" data-f="all">الكل</button>
+      <button class="chip" data-f="low">قرب يخلص</button>
+      <button class="chip" data-f="out">نفد</button>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <details class="card" id="sd">
+    <summary>⚙️ إعدادات المحل</summary>
+    <div class="two">
+      <div><label for="sa">الاسم بالعربي</label><input id="sa"></div>
+      <div><label for="se">الاسم بالإنجليزي</label><input id="se" dir="ltr"></div>
+    </div>
+    <label for="sw">رقم واتساب لاستلام الطلبات</label>
+    <input id="sw" dir="ltr" inputmode="tel" placeholder="201012345678">
+    <p class="note">بالصيغة الدولية بدون + وبدون صفر البداية. مثال: 201012345678</p>
+    <label for="sg">التوقيع أسفل الموقع (Made By)</label>
+    <input id="sg" dir="ltr" placeholder="PeterParker">
+    <label for="lg">صورة اللوجو (بتظهر في نص الشريط العلوي)</label>
+    <input id="lg" type="file" accept="image/*">
+    <img id="lprev" alt="" hidden style="height:56px;margin-top:8px;border-radius:10px;background:var(--g);padding:4px;max-width:100%;object-fit:contain">
+    <p class="note">يفضّل PNG بخلفية شفافة.</p>
+    <div class="act"><button class="btn" id="saveS">حفظ الإعدادات</button><button class="btn del" id="rmL" hidden>إزالة اللوجو</button></div>
+  </details>
+  <p class="note">أي حفظ بيظهر للعملاء بعد دقيقة أو اتنين (وقت GitHub في التحديث).</p>
+</div>
+</div>
+
+<button class="fab" id="add" hidden>＋ منتج جديد</button>
+
+<div class="modal" id="m"><div class="sheet">
+  <h2 id="mt">منتج جديد</h2>
+  <label for="pa">الاسم بالعربي *</label><input id="pa">
+  <label for="pe">الاسم بالإنجليزي</label><input id="pe" dir="ltr">
+  <div class="two">
+    <div><label for="pp">السعر *</label><input id="pp" type="number" inputmode="decimal" min="0" step="any"></div>
+    <div><label for="pq">الكمية المتاحة *</label><input id="pq" type="number" inputmode="numeric" min="0"></div>
+  </div>
+  <div class="two">
+    <div><label for="pca">القسم بالعربي</label><input id="pca" list="cats" placeholder="بقالة"></div>
+    <div><label for="pce">القسم بالإنجليزي</label><input id="pce" dir="ltr" placeholder="Grocery"></div>
+  </div>
+  <datalist id="cats"></datalist>
+  <label for="pi">صورة المنتج</label>
+  <input id="pi" type="file" accept="image/*">
+  <img id="prev" alt="" hidden>
+  <div class="err" id="perr"></div>
+  <button class="btn big" id="saveP">حفظ المنتج</button>
+  <button class="btn sec big" id="cancel" style="margin-top:8px">إلغاء</button>
+</div></div>
+<div id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+let repo="",token="",sha=null,DB={settings:{},products:[]},editId=null,busy=false,filter="all",qt=null;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const b64=s=>btoa(unescape(encodeURIComponent(s))), unb64=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
+const setSt=t=>$("st").textContent=t;
+function toast(t,ms=4500){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),ms)}
+
+async function api(path,opts={}){
+  const res=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{...opts,headers:{Authorization:"Bearer "+token,Accept:"application/vnd.github+json","Content-Type":"application/json"}});
+  if(res.status===401)throw new Error("التوكن غلط أو منتهي");
+  if(res.status===403)throw new Error("التوكن ملوش صلاحية الكتابة على الريبو ده");
+  return res;
+}
+async function loadDB(){
+  const res=await api("products.json?t="+Date.now());
+  if(res.status===404){DB={settings:{SHOP_AR:"ماركت الشامي",SHOP_EN:"Al-Shami Market",WHATSAPP:"201202636004",SIGN:"PeterParker"},products:[]};sha=null;return}
+  if(!res.ok)throw new Error("مش لاقي الريبو. اتأكد من الاسم والتوكن");
+  const j=await res.json();sha=j.sha;DB=JSON.parse(unb64(j.content));DB.settings=DB.settings||{};DB.products=DB.products||[];
+}
+async function saveDB(msg){
+  const body={message:msg,content:b64(JSON.stringify(DB,null,1))};
+  if(sha)body.sha=sha;
+  const res=await api("products.json",{method:"PUT",body:JSON.stringify(body)});
+  if(res.status===409||res.status===422){await loadDB();render();throw new Error("اتغيّر الملف من مكان تاني. اتحدّثت البيانات، جرّب تاني")}
+  if(!res.ok)throw new Error("فشل الحفظ ("+res.status+")");
+  sha=(await res.json()).content.sha;
+}
+async function putImage(path,base64){
+  const res=await api(path,{method:"PUT",body:JSON.stringify({message:"صورة",content:base64})});
+  if(!res.ok)throw new Error("فشل رفع الصورة ("+res.status+")");
+}
+async function delImage(path){
+  try{if(!path)return;const g=await api(path);if(!g.ok)return;const j=await g.json();
+    await api(path,{method:"DELETE",body:JSON.stringify({message:"حذف صورة",sha:j.sha})})}catch(e){}
+}
+function resize(file,max=700,png=false){
+  return new Promise((ok,no)=>{
+    const img=new Image(),u=URL.createObjectURL(file);
+    img.onload=()=>{
+      const k=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+      const x=c.getContext("2d");if(!png){x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height)}x.drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(u);ok(c.toDataURL(png?"image/png":"image/jpeg",.85).split(",")[1]);
+    };
+    img.onerror=()=>no(new Error("الصورة دي مش مدعومة"));
+    img.src=u;
+  });
+}
+async function run(fn,ok){
+  if(busy){toast("استنى لحظة، في عملية شغالة");return false}
+  busy=true;setSt("⏳ جاري الحفظ...");
+  try{await fn();toast(ok);setSt("✅ اتحفظ");return true}
+  catch(e){toast("⚠️ "+(e.message||"حصلت مشكلة"));setSt("⚠️ فشل");return false}
+  finally{busy=false}
+}
+
+async function connect(){
+  $("lerr").textContent="";
+  repo=$("repo").value.trim().replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"").replace(/\/$/,"");token=$("tok").value.trim();
+  if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token)return $("lerr").textContent="اكتب اسم الريبو والتوكن";
+  $("go").disabled=true;$("go").textContent="جاري الدخول...";
+  try{await loadDB();store.set("repo",repo);store.set("tok",token);showApp()}
+  catch(e){$("lerr").textContent=e.message||"حصلت مشكلة في الاتصال"}
+  $("go").disabled=false;$("go").textContent="دخول";
+}
+function showApp(){
+  ["login"].forEach(i=>$(i).hidden=true);
+  ["app","add","out","view"].forEach(i=>$(i).hidden=false);
+  const s=DB.settings;
+  $("sa").value=s.SHOP_AR||"";$("se").value=s.SHOP_EN||"";$("sw").value=s.WHATSAPP||"";$("sg").value=s.SIGN||"";
+  setLogo();render();
+}
+function setLogo(){const l=DB.settings.LOGO;$("lprev").hidden=!l;$("rmL").hidden=!l;if(l)$("lprev").src=l}
+const isLow=p=>p.qty>0&&p.qty<=5, isOut=p=>p.qty<=0;
+function render(){
+  const q=$("q").value.trim().toLowerCase(), P=DB.products;
+  $("s1").textContent=P.length;$("s2").textContent=P.filter(isLow).length;$("s3").textContent=P.filter(isOut).length;
+  const list=P.filter(p=>(filter==="all"||(filter==="low"&&isLow(p))||(filter==="out"&&isOut(p)))&&(!q||((p.ar||"")+" "+(p.en||"")).toLowerCase().includes(q)));
+  $("list").innerHTML=list.length?list.map(p=>`
+    <div class="item">
+      ${p.img?`<img class="th" src="${esc(p.img)}" alt="" onerror="this.style.visibility='hidden'">`:`<div class="th">🛒</div>`}
+      <div>
+        <div class="nm">${esc(p.ar)}</div>
+        <small>${esc(p.price)} ج.م${p.cat_ar?" · "+esc(p.cat_ar):""}</small>
+        <div class="act">
+          <div class="qty"><button data-a="plus" data-id="${esc(p.id)}" aria-label="زيادة">+</button><span class="${p.qty<=0?"z":""}">${p.qty<=0?"نفد":esc(p.qty)}</span><button data-a="minus" data-id="${esc(p.id)}" aria-label="نقص">−</button></div>
+          <button class="btn sec" data-a="edit" data-id="${esc(p.id)}">تعديل</button>
+          <button class="btn del" data-a="del" data-id="${esc(p.id)}">حذف</button>
+        </div>
+      </div>
+    </div>`).join(""):`<p class="note" style="text-align:center;padding:20px 0">مفيش منتجات هنا.</p>`;
+  $("cats").innerHTML=[...new Set(P.map(p=>p.cat_ar).filter(Boolean))].map(c=>`<option value="${esc(c)}">`).join("");
+}
+function queueSave(){
+  setSt("⏳ جاري الحفظ...");clearTimeout(qt);qt=setTimeout(flush,1200);
+}
+async function flush(){
+  if(busy){qt=setTimeout(flush,800);return}
+  busy=true;
+  try{await saveDB("تحديث الكميات");setSt("✅ اتحفظ")}catch(e){toast("⚠️ "+e.message);setSt("⚠️ فشل الحفظ")}
+  busy=false;
+}
+
+$("go").onclick=connect;
+$("out").onclick=()=>{store.del("tok");location.reload()};
+$("q").oninput=render;
+$("fl").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.f;document.querySelectorAll("#fl .chip").forEach(c=>c.classList.toggle("on",c===b));render()};
+
+$("saveS").onclick=()=>run(async()=>{
+  const st={SHOP_AR:$("sa").value.trim()||"ماركت الشامي",SHOP_EN:$("se").value.trim(),WHATSAPP:$("sw").value.replace(/\D/g,""),SIGN:$("sg").value.trim(),LOGO:DB.settings.LOGO||""};
+  const f=$("lg").files[0];let oldLogo=null;
+  if(f){const png=f.type==="image/png";const path="images/logo-"+Date.now().toString(36)+(png?".png":".jpg");
+    await putImage(path,await resize(f,400,png));oldLogo=st.LOGO;st.LOGO=path}
+  DB.settings=st;await saveDB("تحديث إعدادات المحل");
+  if(oldLogo)await delImage(oldLogo);
+  $("lg").value="";setLogo();
+},"✅ اتحفظت الإعدادات");
+$("rmL").onclick=()=>run(async()=>{const old=DB.settings.LOGO;DB.settings.LOGO="";await saveDB("إزالة اللوجو");await delImage(old);setLogo()},"✅ اتشال اللوجو");
+$("lg").onchange=()=>{const f=$("lg").files[0];if(f){$("lprev").src=URL.createObjectURL(f);$("lprev").hidden=false}};
+
+function openEditor(id){
+  editId=id||null;const p=DB.products.find(x=>x.id===id)||{};
+  $("mt").textContent=id?"تعديل منتج":"منتج جديد";
+  $("pa").value=p.ar||"";$("pe").value=p.en||"";$("pp").value=p.price??"";$("pq").value=p.qty??"";
+  $("pca").value=p.cat_ar||"";$("pce").value=p.cat_en||"";$("pi").value="";$("perr").textContent="";
+  $("prev").hidden=!p.img;if(p.img)$("prev").src=p.img;
+  $("m").classList.add("show");
+}
+$("add").onclick=()=>openEditor();
+$("cancel").onclick=()=>$("m").classList.remove("show");
+$("m").addEventListener("click",e=>{if(e.target===$("m"))$("m").classList.remove("show")});
+$("pi").onchange=()=>{const f=$("pi").files[0];if(f){$("prev").src=URL.createObjectURL(f);$("prev").hidden=false}};
+$("list").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const id=b.dataset.id,p=DB.products.find(x=>x.id===id);if(!p)return;
+  const a=b.dataset.a;
+  if(a==="edit")openEditor(id);
+  if(a==="plus"||a==="minus"){p.qty=Math.max(0,(+p.qty||0)+(a==="plus"?1:-1));render();queueSave()}
+  if(a==="del"&&confirm("تحذف «"+p.ar+"» نهائي؟"))run(async()=>{
+    DB.products=DB.products.filter(x=>x.id!==id);await saveDB("حذف: "+p.ar);await delImage(p.img);render();
+  },"✅ اتحذف المنتج");
+});
+$("saveP").onclick=async()=>{
+  const ar=$("pa").value.trim(),price=parseFloat($("pp").value),qty=parseInt($("pq").value,10);
+  if(!ar)return $("perr").textContent="اكتب اسم المنتج بالعربي";
+  if(isNaN(price)||price<0)return $("perr").textContent="اكتب السعر";
+  if(isNaN(qty)||qty<0)return $("perr").textContent="اكتب الكمية (صفر لو خلص)";
+  $("perr").textContent="";
+  const ok=await run(async()=>{
+    const old=DB.products.find(x=>x.id===editId);
+    const p=old||{id:Date.now().toString(36),img:""};
+    let oldImg=null;const f=$("pi").files[0];
+    if(f){const path="images/"+Date.now().toString(36)+".jpg";await putImage(path,await resize(f));oldImg=p.img;p.img=path}
+    Object.assign(p,{ar,en:$("pe").value.trim(),price,qty,cat_ar:$("pca").value.trim(),cat_en:$("pce").value.trim()});
+    if(!old)DB.products.unshift(p);
+    await saveDB((old?"تعديل: ":"إضافة: ")+ar);
+    if(oldImg)await delImage(oldImg);
+    render();
+  },"✅ اتحفظ المنتج");
+  if(ok)$("m").classList.remove("show");
+};
+
+(function init(){
+  const r=store.get("repo"),t=store.get("tok");
+  if(r)$("repo").value=r;
+  if(r&&t){$("tok").value=t;connect()}
+})();
+</script>
+</body>
+</html>
