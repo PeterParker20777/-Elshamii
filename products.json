@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjs8yld",
+   "img": "images/mwjs8yld.jpg",
+   "ar": "ميكس شوكولاته",
+   "price": 15,
+   "qty": 20,
+   "cat_ar": "مشروبات"
+  },
+  {
    "id": "mwjs7srq",
    "img": "images/mwjs7srq.jpg",
    "ar": "اندومي خضار حار",
