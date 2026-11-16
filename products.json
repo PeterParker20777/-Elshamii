@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjqc2z6",
+   "img": "images/mwjqc2z6.jpg",
+   "ar": "تويست (جوز الهند والتوت)",
+   "price": 15,
+   "qty": 20,
+   "cat_ar": "مشروبات"
+  },
+  {
    "id": "mwjqaupe",
    "img": "images/mwjqaupe.jpg",
    "ar": "توست فراوله",
