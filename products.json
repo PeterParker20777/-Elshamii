@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjsgoe1",
+   "img": "images/mwjsgoe1.jpg",
+   "ar": "عصير بيتي تفاح",
+   "price": 10,
+   "qty": 20,
+   "cat_ar": "مشروبات"
+  },
+  {
    "id": "mwjs8yld",
    "img": "images/mwjs8yld.jpg",
    "ar": "ميكس شوكولاته",
