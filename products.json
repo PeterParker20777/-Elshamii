@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjsh5q4",
+   "img": "images/mwjsh5q4.jpg",
+   "ar": "عصير بيتي كوكتيل",
+   "price": 10,
+   "qty": 10,
+   "cat_ar": "مشروبات"
+  },
+  {
    "id": "mwjsgoe1",
    "img": "images/mwjsgoe1.jpg",
    "ar": "عصير بيتي تفاح",
