@@ -93,5 +93,20 @@
    "n": "مشروبات",
    "e": "🧃"
   }
+ ],
+ "offers": [
+  {
+   "id": "mwjth23q",
+   "active": true,
+   "title": "عرض نهائيه الاسبوع",
+   "discount": 30,
+   "limit": 0,
+   "end": "2026-11-29",
+   "items": [
+    "mwjqaupe",
+    "mwjqc2z6",
+    "mwjs8yld"
+   ]
+  }
  ]
 }
