@@ -65,6 +65,36 @@ html[dir=rtl] .sec::after{background:linear-gradient(270deg,var(--line),transpar
 .q{margin-top:auto;display:flex;align-items:center;justify-content:space-between;background:var(--gl);border-radius:12px;padding:3px}
 .q button{width:38px;height:36px;border:0;border-radius:10px;background:var(--g);color:#fff;font-size:20px;line-height:1}
 .q span{font-weight:800;font-size:17px}
+.offers{margin:14px 0 2px}
+.otrack{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 8px}
+.otrack::-webkit-scrollbar{display:none}
+.of{flex:0 0 100%;scroll-snap-align:start;position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:16px;border-radius:24px;color:#fff;background:radial-gradient(circle at 100% 0,rgba(255,255,255,.22),transparent 45%),linear-gradient(120deg,#b3261e,#e8590c 62%,#f5b301);box-shadow:0 10px 26px rgba(179,38,30,.32)}
+.of::after{content:"🎁";position:absolute;inset-inline-end:-6px;bottom:-14px;font-size:70px;opacity:.16;transform:rotate(-12deg);pointer-events:none}
+.ofl{flex:none;width:92px;height:92px;border-radius:50%;background:var(--y);color:#13201a;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;border:3px dashed rgba(19,32,26,.55);animation:pop 2.2s ease-in-out infinite;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.ofl b{font-size:14px;font-weight:800}.ofl strong{font-size:26px;font-weight:800}
+@keyframes pop{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.08)}}
+.ofb{flex:1;min-width:0;position:relative;z-index:1}
+.ofb h3{margin:0;font-size:19px;font-weight:800;line-height:1.3}
+.ofm{font-size:13px;font-weight:600;opacity:.95;margin:2px 0 8px}
+.ofi{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.ofi::-webkit-scrollbar{display:none}
+.oc{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:0;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.18);color:#fff;border-radius:12px;padding:4px 10px;font-size:12.5px;line-height:1.35;text-align:start;transition:transform .12s,background .12s}
+.oc:active{transform:scale(.95)}
+.oc:hover{background:rgba(255,255,255,.3)}
+.oc span{font-weight:700;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oc s{opacity:.75;font-size:11.5px;margin-inline-end:5px}
+.oc b{color:#fff3c4}
+.ofa{margin-top:9px;border:0;border-radius:12px;background:#fff;color:#b3261e;font-weight:800;padding:8px 16px;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:transform .1s}
+.ofa:active{transform:scale(.96)}
+.odots{display:flex;justify-content:center;gap:6px;margin-top:2px}
+.odots i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:all .25s;cursor:pointer}
+.odots i.on{width:22px;border-radius:5px;background:var(--r)}
+.pr .old{font-size:13px;font-weight:600;color:var(--mut);text-decoration:line-through;margin-inline-end:5px}
+.pr.dis{color:var(--r)}
+.badge.off{inset-inline-start:auto;inset-inline-end:8px;background:var(--y);color:#13201a}
+.plim{font-size:11.5px;color:var(--mut);margin-top:-2px}
+@media(max-width:420px){.ofl{width:74px;height:74px}.ofl strong{font-size:21px}.ofb h3{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.of .ofl{animation:none!important}}
 .empty{text-align:center;color:var(--mut);padding:50px 0;font-weight:600}
 .sk{height:230px;border-radius:18px;background:linear-gradient(100deg,var(--card) 40%,var(--gl) 50%,var(--card) 60%);background-size:200% 100%;animation:sh 1.3s infinite linear}
 @keyframes sh{to{background-position:-200% 0}}
@@ -143,6 +173,7 @@ label.l{display:block;font-weight:600;margin:14px 0 5px}
     <p>اختار أغراضك، ابعت الطلب على واتساب، وتعالى استلمه وحاسب.</p>
     <div class="pills"><span>⚡ جاهز في دقايق</span><span>💵 كاش أو محفظة</span><span>🏪 استلام أو توصيل</span></div>
   </section>
+  <section class="offers" id="offers" hidden aria-label="العروض"><div class="otrack" id="otrack"></div><div class="odots" id="odots"></div></section>
   <div class="tools"><input id="s" type="search" placeholder="ابحث عن منتج..."><div class="chips" id="chips"></div></div>
   <div id="grid"></div>
   <div class="empty" id="empty" hidden>مفيش منتجات مطابقة</div>
@@ -198,7 +229,7 @@ label.l{display:block;font-weight:600;margin:14px 0 5px}
 /* الاسم والرقم واللوجو والأقسام بتتغير من صفحة admin.html */
 const CONFIG={SHOP_AR:"ماركت الشامي",WHATSAPP:"201202636004",LOGO:"",VF_NUM:"",WALLET_NUM:""};
 const CUR="ج.م";
-let products=[],cats=[],cart={},cat="",loading=true;
+let products=[],cats=[],offers=[],cart={},cat="",loading=true;
 const $=id=>document.getElementById(id);
 const num=n=>n.toLocaleString("ar-EG"), fmt=n=>num(n)+" "+CUR;
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -208,6 +239,45 @@ const vfNum=()=>CONFIG.VF_NUM||local(CONFIG.WHATSAPP), walNum=()=>CONFIG.WALLET_
 const emo=n=>(cats.find(c=>c.n===n)||{}).e||"";
 const PAYN={cod:"كاش عند الاستلام",vf:"فودافون كاش",wallet:"محفظة إلكترونية / انستاباي"};
 
+/* ===== العروض ===== */
+const endTs=o=>o.end?new Date(o.end+"T23:59:59").getTime():Infinity;
+const offerOn=o=>o&&o.active!==false&&+o.discount>0&&Date.now()<=endTs(o);
+function offerOf(p){let b=null;for(const o of offers)if(offerOn(o)&&o.items.includes(p.id)&&(!b||+o.discount>+b.discount))b=o;return b}
+const dprice=(p,o)=>Math.round(p.price*(1-o.discount/100)*100)/100;
+function lineCost(i,q){
+  const p=products[i],o=offerOf(p);if(!o)return q*p.price;
+  const lim=+o.limit>0?+o.limit:Infinity,d=Math.min(q,lim);
+  return Math.round((d*dprice(p,o)+(q-d)*p.price)*100)/100;
+}
+const idIdx=id=>products.findIndex(p=>p.id===id);
+function addOne(id){const i=idIdx(id);if(i<0)return false;const p=products[i];if(p.qty>0&&(cart[i]||0)<p.qty){cart[i]=(cart[i]||0)+1;return true}return false}
+function endTxt(o){
+  if(!o.end)return"";const d=Math.ceil((endTs(o)-Date.now())/864e5);
+  return d<=1?"⏳ ينتهي النهاردة":d===2?"⏳ ينتهي بكرة":"⏳ باقي "+num(d)+" أيام";
+}
+let offTimer=null;
+function renderOffers(){
+  const live=offers.filter(offerOn).map(o=>({o,items:o.items.map(id=>products.find(p=>p.id===id)).filter(p=>p&&p.qty>0)})).filter(x=>x.items.length);
+  const box=$("offers");box.hidden=!live.length;clearInterval(offTimer);if(!live.length)return;
+  $("otrack").innerHTML=live.map(({o,items})=>{
+    const meta=[endTxt(o),+o.limit>0?"حتى "+num(+o.limit)+" قطعة من كل منتج":""].filter(Boolean).join(" · ");
+    return `<article class="of"><div class="ofl"><b>خصم</b><strong>${num(+o.discount)}%</strong></div>
+      <div class="ofb"><h3>🎁 ${esc(o.title)}</h3>${meta?`<div class="ofm">${meta}</div>`:""}
+      <div class="ofi">${items.map(p=>{const bo=offerOf(p)||o;return `<button class="oc" data-o="one" data-id="${esc(p.id)}"><span>${esc(p.ar)}</span><div><s>${num(p.price)}</s><b>${num(dprice(p,bo))} ${CUR}</b></div></button>`}).join("")}</div>
+      <button class="ofa" data-o="all" data-oid="${esc(o.id)}">أضف العرض للسلة 🛒</button></div></article>`}).join("");
+  const tr=$("otrack"),cards=[...tr.children];
+  $("odots").innerHTML=cards.length>1?cards.map((_,k)=>`<i data-k="${k}"></i>`).join(""):"";
+  const cur=()=>{const l=tr.getBoundingClientRect().left;let b=0,m=1e9;cards.forEach((c,k)=>{const d=Math.abs(c.getBoundingClientRect().left-l);if(d<m){m=d;b=k}});return b};
+  const mark=()=>{const k=cur();[...$("odots").children].forEach((e,j)=>e.classList.toggle("on",j===k))};
+  const go=k=>tr.scrollBy({left:cards[k].getBoundingClientRect().left-tr.getBoundingClientRect().left,behavior:"smooth"});
+  tr.onscroll=mark;mark();
+  $("odots").onclick=e=>{const d=e.target.closest("[data-k]");if(d){go(+d.dataset.k);clearInterval(offTimer)}};
+  if(cards.length>1&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
+    offTimer=setInterval(()=>{if(!document.hidden)go((cur()+1)%cards.length)},5000);
+    tr.addEventListener("touchstart",()=>clearInterval(offTimer),{once:true});
+  }
+}
+
 async function loadProducts(){
   try{
     const res=await fetch("products.json?t="+Date.now());if(!res.ok)throw 0;
@@ -215,8 +285,9 @@ async function loadProducts(){
     Object.assign(CONFIG,d.settings||{});
     products=(d.products||[]).map(p=>({...p,price:+p.price,qty:(p.qty===""||p.qty==null)?999:+p.qty}));
     cats=(d.categories||[]).filter(c=>c&&c.n);
+    offers=(Array.isArray(d.offers)?d.offers:[]).filter(o=>o&&Array.isArray(o.items));
     products.forEach(p=>{if(p.cat_ar&&!cats.some(c=>c.n===p.cat_ar))cats.push({n:p.cat_ar,e:""})});
-  }catch(e){products=[];cats=[]}
+  }catch(e){products=[];cats=[];offers=[]}
   loading=false;
 }
 function renderStatic(){
@@ -232,9 +303,10 @@ function renderChips(){
 function card(p,i){
   const n=cart[i]||0,out=p.qty<=0;
   const img=p.img?`<img src="${esc(p.img)}" alt="" loading="lazy">`:`<div class="ph">${emo(p.cat_ar)||"🛒"}</div>`;
-  const badge=out?`<span class="badge o">غير متوفر</span>`:(p.qty<=5?`<span class="badge">باقي ${num(p.qty)}</span>`:"");
+  const of=out?null:offerOf(p);
+  const badge=(out?`<span class="badge o">غير متوفر</span>`:(p.qty<=5?`<span class="badge">باقي ${num(p.qty)}</span>`:""))+(of?`<span class="badge off">-${num(+of.discount)}%</span>`:"");
   const act=out?`<button class="add" disabled>غير متوفر</button>`:n?`<div class="q"><button data-a="plus" data-i="${i}" aria-label="زيادة">+</button><span>${num(n)}</span><button data-a="minus" data-i="${i}" aria-label="نقص">−</button></div>`:`<button class="add" data-a="plus" data-i="${i}">أضف للسلة</button>`;
-  return `<div class="p ${out?"so":""}"><div class="imw">${img}${badge}</div><div class="pb"><b>${esc(p.ar)}</b><div class="pr">${num(p.price)} <small>${CUR}</small></div>${act}</div></div>`;
+  return `<div class="p ${out?"so":""}"><div class="imw">${img}${badge}</div><div class="pb"><b>${esc(p.ar)}</b>${of?`<div class="pr dis"><span class="old">${num(p.price)}</span>${num(dprice(p,of))} <small>${CUR}</small></div>${+of.limit>0?`<div class="plim">بسعر العرض لحد ${num(+of.limit)} قطعة</div>`:""}`:`<div class="pr">${num(p.price)} <small>${CUR}</small></div>`}${act}</div></div>`;
 }
 function renderGrid(){
   const q=$("s").value.trim().toLowerCase();
@@ -251,7 +323,7 @@ function renderGrid(){
   });
   $("grid").innerHTML=parts.join("");
 }
-function totals(){let c=0,t=0;for(const i in cart){c+=cart[i];t+=cart[i]*products[i].price}return{c,t}}
+function totals(){let c=0,t=0;for(const i in cart){c+=cart[i];t+=lineCost(i,cart[i])}return{c,t}}
 function renderBar(){
   const{c,t}=totals();
   $("bar").classList.toggle("show",c>0);
@@ -265,12 +337,18 @@ function updPay(){
 }
 function renderLines(){
   $("lines").innerHTML=Object.keys(cart).map(i=>{const p=products[i];
-    return `<div class="row"><span class="nm">${esc(p.ar)}</span><span class="q"><button data-a="plus" data-i="${i}">+</button><span>${num(cart[i])}</span><button data-a="minus" data-i="${i}">−</button></span><b>${fmt(cart[i]*p.price)}</b></div>`}).join("");
+    return `<div class="row"><span class="nm">${esc(p.ar)}${offerOf(p)?` <small style="color:var(--r)">🎁 -${num(+offerOf(p).discount)}%</small>`:""}</span><span class="q"><button data-a="plus" data-i="${i}">+</button><span>${num(cart[i])}</span><button data-a="minus" data-i="${i}">−</button></span><b>${fmt(lineCost(i,cart[i]))}</b></div>`}).join("");
   $("total").textContent=fmt(totals().t);updPay();
 }
 function refresh(){renderChips();renderGrid();renderBar();if($("m").classList.contains("show"))renderLines()}
 
 document.addEventListener("click",e=>{
+  const ob=e.target.closest("[data-o]");
+  if(ob){
+    if(ob.dataset.o==="one")addOne(ob.dataset.id);
+    else{const o=offers.find(x=>x.id===ob.dataset.oid);if(o)o.items.forEach(addOne)}
+    refresh();const t=ob.innerHTML;ob.textContent="✓ اتضافت";setTimeout(()=>{if(ob.isConnected)ob.innerHTML=t},1200);return;
+  }
   const b=e.target.closest("[data-a]");
   if(b){
     const i=b.dataset.i,p=products[i];
@@ -302,7 +380,7 @@ $("send").onclick=()=>{
   save("name",name);save("phone",phone);save("addr",addr);
   const no=Math.floor(Date.now()/1000).toString().slice(-5);
   const when=new Date().toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"});
-  const lines=Object.keys(cart).map((i,n)=>`${n+1}) ${products[i].ar} × ${cart[i]} = ${cart[i]*products[i].price} ${CUR}`).join("\n");
+  const lines=Object.keys(cart).map((i,n)=>`${n+1}) ${products[i].ar} × ${cart[i]} = ${lineCost(i,cart[i])} ${CUR}${offerOf(products[i])?` (عرض -${offerOf(products[i]).discount}%)`:""}`).join("\n");
   const bar="━━━━━━━━━━━━━━";
   const msg=[`🛒 *طلب جديد #${no}*`,`🕒 ${when}`,bar,
     `👤 *الاسم:* ${name}`,`📞 *الموبايل:* ${phone}`,
@@ -336,7 +414,7 @@ $("send").onclick=()=>{
 (async function init(){
   $("n").value=load("name")||"";$("ph").value=load("phone")||"";$("ad").value=load("addr")||"";
   renderStatic();refresh();
-  await loadProducts();renderStatic();refresh();
+  await loadProducts();renderStatic();renderOffers();refresh();
 })();
 </script>
 </body>

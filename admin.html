@@ -64,6 +64,12 @@ html[dir=rtl] .fab{transform:translateX(50%)}
 #prev{width:120px;height:120px;object-fit:cover;border-radius:14px;background:var(--gl);display:block;margin-top:8px}
 #toast{position:fixed;bottom:84px;inset-inline:14px;max-width:520px;margin:auto;background:#13201a;color:#fff;padding:12px 14px;border-radius:12px;display:none;z-index:50}
 #toast.show{display:block}
+.orow{flex-wrap:wrap}.orow .cn{flex:1 1 100%}
+.pk{display:flex;align-items:center;gap:10px;margin:0;padding:9px 4px;font-weight:600;border-bottom:1px solid var(--line);cursor:pointer}
+.pk input{width:20px;height:20px;padding:0;accent-color:var(--g);flex:none}
+.pk span{flex:1}.pk small{color:var(--mut);font-weight:400}
+#opick{max-height:230px;overflow:auto;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;margin-top:8px;background:var(--card)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.hd h2{margin:0}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -115,6 +121,12 @@ html[dir=rtl] .fab{transform:translateX(50%)}
     <div id="catList"></div>
   </div>
 
+  <div class="card">
+    <div class="hd"><h2>🎁 العروض</h2><button class="btn" id="oadd">＋ عرض جديد</button></div>
+    <p class="note">العروض بتظهر للعملاء في مستطيل فوق البحث، والخصم بيتحسب تلقائي في السلة.</p>
+    <div id="offList"></div>
+  </div>
+
   <details class="card" id="sd">
     <summary>⚙️ إعدادات المحل</summary>
     <label for="sa">اسم المحل</label><input id="sa">
@@ -152,6 +164,22 @@ html[dir=rtl] .fab{transform:translateX(50%)}
   <button class="btn big" id="saveP">حفظ المنتج</button>
   <button class="btn sec big" id="cancel" style="margin-top:8px">إلغاء</button>
 </div></div>
+<div class="modal" id="om"><div class="sheet">
+  <h2 id="omt">عرض جديد</h2>
+  <label for="ot">اسم العرض *</label><input id="ot" placeholder="مثلاً: عروض نهاية الأسبوع">
+  <div class="two">
+    <div><label for="od">نسبة الخصم % *</label><input id="od" type="number" inputmode="decimal" min="1" max="99" step="any" placeholder="20"></div>
+    <div><label for="ol">عدد القطع بسعر العرض</label><input id="ol" type="number" inputmode="numeric" min="1" placeholder="بدون حد"></div>
+  </div>
+  <p class="note">عدد القطع = أقصى عدد من كل منتج يشتريه العميل بسعر العرض في الطلب الواحد (الزيادة بالسعر العادي). سيبه فاضي لو مفيش حد.</p>
+  <label for="oe">آخر يوم للعرض (اختياري)</label><input id="oe" type="date">
+  <label for="oq">المنتجات المشمولة * (<span id="ocount">0</span>)</label>
+  <input id="oq" type="search" placeholder="🔍 ابحث في المنتجات...">
+  <div id="opick"></div>
+  <div class="err" id="oerr"></div>
+  <button class="btn big" id="saveO">حفظ العرض</button>
+  <button class="btn sec big" id="cancelO" style="margin-top:8px">إلغاء</button>
+</div></div>
 <div id="toast"></div>
 
 <script>
@@ -171,9 +199,9 @@ async function api(path,opts={}){
 }
 async function loadDB(){
   const res=await api("products.json?t="+Date.now());
-  if(res.status===404){DB={settings:{SHOP_AR:"ماركت الشامي",WHATSAPP:"201202636004"},categories:[],products:[]};sha=null;return}
+  if(res.status===404){DB={settings:{SHOP_AR:"ماركت الشامي",WHATSAPP:"201202636004"},categories:[],products:[],offers:[]};sha=null;return}
   if(!res.ok)throw new Error("مش لاقي الريبو. اتأكد من الاسم والتوكن");
-  const j=await res.json();sha=j.sha;DB=JSON.parse(unb64(j.content));DB.settings=DB.settings||{};DB.products=DB.products||[];syncCats();
+  const j=await res.json();sha=j.sha;DB=JSON.parse(unb64(j.content));DB.settings=DB.settings||{};DB.products=DB.products||[];DB.offers=Array.isArray(DB.offers)?DB.offers:[];syncCats();
 }
 function syncCats(){
   DB.categories=(DB.categories||[]).filter(c=>c&&c.n);
@@ -251,7 +279,7 @@ function render(){
         </div>
       </div>
     </div>`).join(""):`<p class="note" style="text-align:center;padding:20px 0">مفيش منتجات هنا.</p>`;
-  renderCats();
+  renderCats();renderOffers();
 }
 function renderCats(){
   const C=DB.categories;
@@ -331,7 +359,7 @@ $("list").addEventListener("click",e=>{
   if(a==="edit")openEditor(id);
   if(a==="plus"||a==="minus"){p.qty=Math.max(0,(+p.qty||0)+(a==="plus"?1:-1));render();queueSave()}
   if(a==="del"&&confirm("تحذف «"+p.ar+"» نهائي؟"))run(async()=>{
-    DB.products=DB.products.filter(x=>x.id!==id);await saveDB("حذف: "+p.ar);await delImage(p.img);render();
+    DB.products=DB.products.filter(x=>x.id!==id);DB.offers.forEach(o=>o.items=(o.items||[]).filter(k=>k!==id));await saveDB("حذف: "+p.ar);await delImage(p.img);render();
   },"✅ اتحذف المنتج");
 });
 $("saveP").onclick=async()=>{
@@ -352,6 +380,59 @@ $("saveP").onclick=async()=>{
     render();
   },"✅ اتحفظ المنتج");
   if(ok)$("m").classList.remove("show");
+};
+
+/* ===== العروض ===== */
+const oState=o=>o.active===false?"paused":(o.end&&Date.now()>new Date(o.end+"T23:59:59").getTime()?"ended":"on");
+const oStT={on:"🟢 شغال",paused:"⏸️ متوقف",ended:"⌛ انتهى"};
+let offId=null,picked=new Set();
+function renderOffers(){
+  const O=DB.offers||[];
+  $("offList").innerHTML=O.length?O.map((o,i)=>`<div class="crow orow"><div class="cn">🎁 ${esc(o.title)}<br><small>خصم ${esc(o.discount)}% · ${(o.items||[]).length} منتج${o.limit?" · حتى "+esc(o.limit)+" قطعة":""}${o.end?" · لحد "+esc(o.end):""} · ${oStT[oState(o)]}</small></div>
+    <button class="btn sec" data-oa="tog" data-i="${i}">${o.active===false?"تفعيل":"إيقاف"}</button>
+    <button class="btn sec" data-oa="edit" data-i="${i}">تعديل</button>
+    <button class="btn del" data-oa="del" data-i="${i}">حذف</button></div>`).join(""):`<p class="note">لسه مفيش عروض. اضغط «عرض جديد».</p>`;
+}
+function renderPick(){
+  const q=$("oq").value.trim().toLowerCase();
+  const L=DB.products.filter(p=>!q||(p.ar||"").toLowerCase().includes(q));
+  $("opick").innerHTML=L.length?L.map(p=>`<label class="pk"><input type="checkbox" value="${esc(p.id)}" ${picked.has(p.id)?"checked":""}><span>${esc(p.ar)}</span><small>${esc(p.price)} ج.م</small></label>`).join(""):`<p class="note">مفيش منتجات.</p>`;
+  $("ocount").textContent=picked.size;
+}
+function openOffer(i){
+  const o=i==null?{}:DB.offers[i];offId=o.id||null;
+  $("omt").textContent=offId?"تعديل عرض":"عرض جديد";
+  $("ot").value=o.title||"";$("od").value=o.discount??"";$("ol").value=o.limit||"";$("oe").value=o.end||"";$("oq").value="";$("oerr").textContent="";
+  picked=new Set((o.items||[]).filter(id=>DB.products.some(p=>p.id===id)));
+  renderPick();$("om").classList.add("show");
+}
+$("oadd").onclick=()=>openOffer();
+$("cancelO").onclick=()=>$("om").classList.remove("show");
+$("om").addEventListener("click",e=>{if(e.target===$("om"))$("om").classList.remove("show")});
+$("oq").oninput=renderPick;
+$("opick").addEventListener("change",e=>{const c=e.target;if(c.type!=="checkbox")return;picked[c.checked?"add":"delete"](c.value);$("ocount").textContent=picked.size});
+$("offList").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const i=+b.dataset.i,o=DB.offers[i];if(!o)return;
+  if(b.dataset.oa==="edit")openOffer(i);
+  if(b.dataset.oa==="tog")run(async()=>{o.active=(o.active===false);await saveDB((o.active?"تفعيل عرض: ":"إيقاف عرض: ")+o.title);renderOffers()},"✅ اتحدّث العرض");
+  if(b.dataset.oa==="del"&&confirm("تحذف عرض «"+o.title+"»؟"))run(async()=>{DB.offers.splice(i,1);await saveDB("حذف عرض: "+o.title);renderOffers()},"✅ اتحذف العرض");
+});
+$("saveO").onclick=async()=>{
+  const title=$("ot").value.trim(),disc=parseFloat($("od").value),lim=parseInt($("ol").value,10),end=$("oe").value;
+  if(!title)return $("oerr").textContent="اكتب اسم العرض";
+  if(isNaN(disc)||disc<=0||disc>=100)return $("oerr").textContent="اكتب نسبة خصم من 1 لـ 99";
+  if(!picked.size)return $("oerr").textContent="اختار منتج واحد على الأقل";
+  $("oerr").textContent="";
+  const ok=await run(async()=>{
+    const old=DB.offers.find(x=>x.id===offId);
+    const o=old||{id:Date.now().toString(36),active:true};
+    Object.assign(o,{title,discount:disc,limit:lim>0?lim:0,end:end||"",items:[...picked]});
+    if(!old)DB.offers.unshift(o);
+    await saveDB((old?"تعديل عرض: ":"إضافة عرض: ")+title);
+    renderOffers();
+  },"✅ اتحفظ العرض");
+  if(ok)$("om").classList.remove("show");
 };
 
 (function init(){
