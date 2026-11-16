@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjshwja",
+   "img": "images/mwjshwja.jpg",
+   "ar": "عصير بيتي برتقال",
+   "price": 10,
+   "qty": 10,
+   "cat_ar": "مشروبات"
+  },
+  {
    "id": "mwjsh5q4",
    "img": "images/mwjsh5q4.jpg",
    "ar": "عصير بيتي كوكتيل",
