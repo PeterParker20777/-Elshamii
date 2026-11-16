@@ -6,16 +6,7 @@
   "VF_NUM": "",
   "WALLET_NUM": ""
  },
- "products": [
-  {
-   "id": "d3",
-   "ar": "لبن كامل الدسم 1 لتر",
-   "price": 42,
-   "qty": 12,
-   "cat_ar": "ألبان",
-   "img": ""
-  }
- ],
+ "products": [],
  "categories": [
   {
    "n": "بقالة",
