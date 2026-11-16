@@ -1,61 +1,73 @@
 {
  "settings": {
   "SHOP_AR": "ماركت الشامي",
-  "SHOP_EN": "Al-Shami Market",
-  "WHATSAPP": "201272131896",
-  "SIGN": "PeterParker",
-  "LOGO": "images/logo-mwjp72ro.png"
+  "WHATSAPP": "201202636004",
+  "LOGO": "",
+  "VF_NUM": "",
+  "WALLET_NUM": ""
  },
  "products": [
   {
-   "id": "mwjpnm6y",
-   "img": "images/mwjpnm6y.jpg",
-   "ar": "توست جوز الهند والتوت",
-   "en": "TWIST Coconut Berry",
-   "price": 15,
+   "id": "d0",
+   "ar": "أرز مصري 1 كجم",
+   "price": 38,
    "qty": 20,
-   "cat_ar": "مشروبات",
-   "cat_en": ""
-  },
-  {
-   "id": "mwjp9vki",
-   "img": "images/mwjp9vki.jpg",
-   "ar": "توست فراوله",
-   "en": "TWAST",
-   "price": 15,
-   "qty": 20,
-   "cat_ar": "مشروبات",
-   "cat_en": ""
+   "cat_ar": "بقالة",
+   "img": ""
   },
   {
    "id": "d1",
    "ar": "سكر 1 كجم",
-   "en": "Sugar 1kg",
    "price": 32,
    "qty": 15,
    "cat_ar": "بقالة",
-   "cat_en": "Grocery",
    "img": ""
   },
   {
    "id": "d2",
    "ar": "زيت عباد الشمس 1 لتر",
-   "en": "Sunflower Oil 1L",
    "price": 85,
    "qty": 10,
    "cat_ar": "بقالة",
-   "cat_en": "Grocery",
+   "img": ""
+  },
+  {
+   "id": "d3",
+   "ar": "لبن كامل الدسم 1 لتر",
+   "price": 42,
+   "qty": 12,
+   "cat_ar": "ألبان",
    "img": ""
   },
   {
    "id": "d4",
-   "ar": "بيض",
-   "en": "Eggs",
-   "price": 5,
-   "qty": 1,
+   "ar": "بيض (30 بيضة)",
+   "price": 135,
+   "qty": 0,
    "cat_ar": "ألبان",
-   "cat_en": "Dairy",
-   "img": "images/mwjphp8n.jpg"
+   "img": ""
+  },
+  {
+   "id": "d5",
+   "ar": "شاي 40 فتلة",
+   "price": 48,
+   "qty": 25,
+   "cat_ar": "مشروبات",
+   "img": ""
+  }
+ ],
+ "categories": [
+  {
+   "n": "بقالة",
+   "e": "🛒"
+  },
+  {
+   "n": "ألبان",
+   "e": "🥛"
+  },
+  {
+   "n": "مشروبات",
+   "e": "🧃"
   }
  ]
 }
