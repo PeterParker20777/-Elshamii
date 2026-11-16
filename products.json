@@ -59,13 +59,13 @@
   },
   {
    "id": "d4",
-   "ar": "بيض (30 بيضة)",
-   "en": "Eggs (30)",
-   "price": 135,
+   "ar": "بيض",
+   "en": "Eggs",
+   "price": 5,
    "qty": 1,
    "cat_ar": "ألبان",
    "cat_en": "Dairy",
-   "img": ""
+   "img": "images/mwjphp8n.jpg"
   },
   {
    "id": "d5",
