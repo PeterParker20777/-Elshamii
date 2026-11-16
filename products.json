@@ -4,7 +4,9 @@
   "WHATSAPP": "201202636004",
   "VF_NUM": "01202636004",
   "WALLET_NUM": "01202636004",
-  "LOGO": "images/logo-mwjqazd1.png"
+  "LOGO": "images/logo-mwjqazd1.png",
+  "STORE_OPEN": false,
+  "CLOSED_MSG": "المحل مغلق حالياً، تقدر تتصفح المنتجات وتطلب أول ما نفتح 🌙"
  },
  "products": [
   {
