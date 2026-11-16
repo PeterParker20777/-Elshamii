@@ -8,6 +8,16 @@
  },
  "products": [
   {
+   "id": "mwjp9vki",
+   "img": "images/mwjp9vki.jpg",
+   "ar": "توست فراوله",
+   "en": "TWAST",
+   "price": 15,
+   "qty": 20,
+   "cat_ar": "مشروبات",
+   "cat_en": ""
+  },
+  {
    "id": "d0",
    "ar": "أرز مصري 1 كجم",
    "en": "Egyptian Rice 1kg",
