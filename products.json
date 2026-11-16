@@ -8,6 +8,14 @@
  },
  "products": [
   {
+   "id": "mwjs77hf",
+   "img": "images/mwjs77hf.jpg",
+   "ar": "اندومي خضار",
+   "price": 10,
+   "qty": 20,
+   "cat_ar": "بقالة"
+  },
+  {
    "id": "mwjqfinj",
    "img": "images/mwjqfinj.jpg",
    "ar": "بيض",
