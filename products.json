@@ -56,16 +56,6 @@
    "cat_ar": "ألبان",
    "cat_en": "Dairy",
    "img": "images/mwjphp8n.jpg"
-  },
-  {
-   "id": "d5",
-   "ar": "شاي 40 فتلة",
-   "en": "Tea 40 bags",
-   "price": 48,
-   "qty": 25,
-   "cat_ar": "مشروبات",
-   "cat_en": "Drinks",
-   "img": ""
   }
  ]
 }
